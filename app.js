@@ -12,7 +12,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://admin-thong:Test123@cluster0.rzln4di.mongodb.net/todolistDB");
+mongoose.connect("mongodb+srv://admin-thong:Test123@cluster0.rzln4di.mongodb.net/todolistDB", { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(() => console.log( 'Database Connected' ))
+.catch(err => console.log( err ));
 
 const itemsSchema = new mongoose.Schema ({
   name: String
@@ -114,8 +115,6 @@ app.post("/delete", (req, res) => {
 app.get("/:customListName", (req, res) => {
   const customListName = _.capitalize(req.params.customListName);
   
-  
-
   List.findOne({name: customListName}).then((listFound) => {
     if (listFound) {
       console.log("Exist!");
@@ -132,8 +131,6 @@ app.get("/:customListName", (req, res) => {
   }).catch((err) => {
     console.log(err);
   });
-
-
 });
 
 
